@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { Router } from 'express';
 import GraphController from "./src/controllers/graph-controller";
 import Container from "typedi";
