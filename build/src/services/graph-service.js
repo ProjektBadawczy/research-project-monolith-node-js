@@ -47,14 +47,6 @@ let GraphService = class GraphService {
         }
         return null;
     }
-    ;
-    getDirectedGraph(id) {
-        let graph = this.graphs.find(graph => graph.directedGraph.id == id);
-        if (graph != undefined) {
-            return graph.directedGraph;
-        }
-        return null;
-    }
 };
 GraphService = __decorate([
     (0, typedi_1.Service)()

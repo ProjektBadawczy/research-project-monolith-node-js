@@ -1,51 +1,38 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const typedi_1 = require("typedi");
 const http_status_codes_1 = require("http-status-codes");
-class GraphController {
-    constructor(graphService, edmondsKarpService, pushRelabelService) {
+let GraphController = class GraphController {
+    constructor(graphService) {
         this.graphService = graphService;
-        this.edmondsKarpService = edmondsKarpService;
-        this.pushRelabelService = pushRelabelService;
     }
     getGraph(_req, res) {
-        const id = Number(_req.query.id);
-        const graph = this.graphService.getGraph(id);
-        if (graph == null) {
-            res.status(http_status_codes_1.StatusCodes.NOT_FOUND).json([]);
-        }
-        return res.json(graph);
+        return __awaiter(this, void 0, void 0, function* () {
+            var id = _req.query;
+            var graph = yield this.graphService.getGraph;
+            if (graph == null) {
+                res.status(http_status_codes_1.StatusCodes.NOT_FOUND).json([]);
+            }
+            return res.json(graph);
+        });
     }
-    getDirectedGraph(_req, res) {
-        const id = Number(_req.query.id);
-        const graph = this.graphService.getDirectedGraph(id);
-        if (graph == null) {
-            res.status(http_status_codes_1.StatusCodes.NOT_FOUND).json([]);
-        }
-        return res.json(graph);
-    }
-    getEdmondsKarpMaxGraphFlow(_req, res) {
-        const id = Number(_req.query.id);
-        const source = Number(_req.query.source);
-        const destination = Number(_req.query.destination);
-        const graph = this.graphService.getGraph(id);
-        if (graph == null) {
-            res.status(http_status_codes_1.StatusCodes.NOT_FOUND);
-            return;
-        }
-        var maxFlow = this.edmondsKarpService.calculateMaxFlow(graph, source, destination);
-        return res.json(maxFlow);
-    }
-    getPushRelabelMaxGraphFlow(_req, res) {
-        const id = Number(_req.query.id);
-        const source = Number(_req.query.source);
-        const destination = Number(_req.query.destination);
-        const graph = this.graphService.getDirectedGraph(id);
-        if (graph == null) {
-            res.status(http_status_codes_1.StatusCodes.NOT_FOUND);
-            return;
-        }
-        var maxFlow = this.pushRelabelService.calculateMaxFlow(graph, source, destination);
-        return res.json(maxFlow);
-    }
-}
+};
+GraphController = __decorate([
+    (0, typedi_1.Service)()
+], GraphController);
 exports.default = GraphController;

@@ -31,7 +31,7 @@ class DirectedGraph {
                 return vertex;
             }
         }
-        return new vertex_1.Vertex(0, 0);
+        return null;
     }
 }
 exports.DirectedGraph = DirectedGraph;
