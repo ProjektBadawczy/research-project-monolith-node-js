@@ -30,33 +30,34 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typedi_1 = require("typedi");
-const fs = __importStar(require("fs"));
-let GraphService = class GraphService {
-    constructor() {
-        this.graphs = [];
-        fs.readFile('./resources/big_dense_set.json', 'utf8', (err, data) => {
-            if (err)
-                throw err;
-            this.graphs = JSON.parse(data);
-        });
+const _ = __importStar(require("lodash"));
+let EdmondsKarpService = class EdmondsKarpService {
+    constructor(bfsService) {
+        this.bfsService = bfsService;
     }
-    getGraph(id) {
-        let graph = this.graphs.find(graph => graph.graph.id == id);
-        if (graph != undefined) {
-            return graph.graph;
+    calculateMaxFlow(graph, source, destination) {
+        var u, v;
+        var residualGraph = _.cloneDeep(graph);
+        var maxFlow = 0;
+        var bfsResult = this.bfsService.Bfs(residualGraph, source, destination);
+        while (bfsResult.success) {
+            var pathFlow = Number.MAX_VALUE;
+            for (v = destination; v != source; v = bfsResult.parents[v]) {
+                u = bfsResult.parents[v];
+                pathFlow = Math.min(pathFlow, residualGraph.adjacencyMatrix[u][v]);
+            }
+            for (v = destination; v != source; v = bfsResult.parents[v]) {
+                u = bfsResult.parents[v];
+                residualGraph.adjacencyMatrix[u][v] -= pathFlow;
+                residualGraph.adjacencyMatrix[v][u] += pathFlow;
+            }
+            maxFlow += pathFlow;
+            bfsResult = this.bfsService.Bfs(residualGraph, source, destination);
         }
-        return null;
-    }
-    ;
-    getDirectedGraph(id) {
-        let graph = this.graphs.find(graph => graph.directedGraph.id == id);
-        if (graph != undefined) {
-            return graph.directedGraph;
-        }
-        return null;
+        return maxFlow;
     }
 };
-GraphService = __decorate([
+EdmondsKarpService = __decorate([
     (0, typedi_1.Service)()
-], GraphService);
-exports.default = GraphService;
+], EdmondsKarpService);
+exports.default = EdmondsKarpService;
