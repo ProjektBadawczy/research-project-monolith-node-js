@@ -20,4 +20,4 @@ route.get('/directedGraph',
 route.get('/edmondsKarpMaxGraphFlow',
     (req, res) => graphController.getEdmondsKarpMaxGraphFlow(req, res));
 route.get('/pushRelabelMaxGraphFlow',
-    (req, res) => graphController.getEdmondsKarpMaxGraphFlow(req, res));
+    (req, res) => graphController.getPushRelabelMaxGraphFlow(req, res));
