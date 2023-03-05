@@ -33,7 +33,7 @@ jobs:
                sudo service docker start &&\ 
                 sudo groupadd docker &&\
                  sudo usermod -a -G docker ec2-user &&\
-                  newgrp docker &&\
+                  newgrp docker
                   
       - name: Install docker-compose
         uses: appleboy/ssh-action@master
