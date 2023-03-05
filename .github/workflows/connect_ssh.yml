@@ -11,13 +11,13 @@ jobs:
       - name: Checkout the files
         uses: actions/checkout@v2
 
-      - name: Deploy to benchmark server
+      - name: Connect to AWS EC2
         uses: easingthemes/ssh-deploy@main
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
           REMOTE_HOST: ${{ secrets.AWS_DNS }}
-          REMOTE_USER: ubuntu
-          TARGET: /home/ubuntu
+          REMOTE_USER: ec2-user
+          TARGET: /home/ec2-user
 
       - name: Download git
         uses: appleboy/ssh-action@master
@@ -27,4 +27,4 @@ jobs:
           username: ubuntu
           port: 22 
           script:  |
-            sudo apt update
+            sudo apt update 
