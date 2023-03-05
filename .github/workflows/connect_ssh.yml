@@ -19,11 +19,11 @@ jobs:
           REMOTE_USER: ec2-user
           TARGET: /home/ec2-user
 
-      - name: Download git
+      - name: Check whoami
         uses: appleboy/ssh-action@master
         with:
           key: ${{ secrets.SSH_KEY }}
           host: ${{ secrets.AWS_DNS }}
-          username: ubuntu
+          username: ec2-user
           port: 22 
           script: whoami 
