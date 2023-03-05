@@ -19,11 +19,11 @@ jobs:
           REMOTE_USER: ec2-user
           TARGET: /home/ec2-user
 
-      - name: Check whoami
+      - name: Start application on docker
         uses: appleboy/ssh-action@master
         with:
           key: ${{ secrets.SSH_KEY }}
           host: ${{ secrets.AWS_DNS }}
           username: ec2-user
           port: 22 
-          script: whoami 
+          script: docker compose up --build 
