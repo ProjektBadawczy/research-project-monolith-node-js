@@ -19,11 +19,47 @@ jobs:
           REMOTE_USER: ec2-user
           TARGET: /home/ec2-user
 
-      - name: Start application on docker
+      - name: Install docker
         uses: appleboy/ssh-action@master
         with:
           key: ${{ secrets.SSH_KEY }}
           host: ${{ secrets.AWS_DNS }}
           username: ec2-user
           port: 22 
-          script: docker compose up --build 
+          script: |
+            sudo yum update -y &&\
+             sudo amazon-linux-extras install docker &&\
+              sudo yum install docker &&\
+               sudo service docker start &&\ 
+                sudo groupadd docker &&\
+                 sudo usermod -a -G docker ec2-user &&\
+                  newgrp docker &&\
+                  
+      - name: Install docker-compose
+        uses: appleboy/ssh-action@master
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          host: ${{ secrets.AWS_DNS }}
+          username: ec2-user
+          port: 22 
+          script: |
+            sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose &&\
+             sudo chmod +x /usr/local/bin/docker-compose
+          
+      - name: docker-compose build
+        uses: appleboy/ssh-action@master
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          host: ${{ secrets.AWS_DNS }}
+          username: ec2-user
+          port: 22 
+          script: docker-compose build 
+          
+      - name: docker-compose up
+        uses: appleboy/ssh-action@master
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          host: ${{ secrets.AWS_DNS }}
+          username: ec2-user
+          port: 22 
+          script: docker-compose up
