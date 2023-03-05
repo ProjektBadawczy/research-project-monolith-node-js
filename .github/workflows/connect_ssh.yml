@@ -26,5 +26,4 @@ jobs:
           host: ${{ secrets.AWS_DNS }}
           username: ubuntu
           port: 22 
-          script:  |
-            sudo apt update 
+          script: whoami 
