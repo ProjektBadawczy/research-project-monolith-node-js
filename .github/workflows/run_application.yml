@@ -35,4 +35,4 @@ jobs:
           host: ${{ secrets.AWS_APPLICATION_DNS }}
           username: ec2-user
           port: 22 
-          script: docker-compose up
+          script: docker-compose up -d
